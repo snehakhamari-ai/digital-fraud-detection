@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: fraud-api
+    runtime: python
+    plan: free
+    buildCommand: python -m pip install -r requirements.txt && python generate_data.py && python train.py
+    startCommand: python api.py
+    healthCheckPath: /health
+    envVars:
+      - key: FRAUD_REQUIRE_REVIEW_KEY
+        value: "true"
+      - key: FRAUD_REVIEW_API_KEY
+        sync: false
+
+  - type: web
+    name: fraud-dashboard
+    runtime: python
+    plan: free
+    buildCommand: python -m pip install -r requirements.txt && python generate_data.py && python train.py
+    startCommand: python -m streamlit run app.py --server.address 0.0.0.0 --server.port $PORT --server.headless true --browser.gatherUsageStats false
+    healthCheckPath: /_stcore/health
+    envVars:
+      - key: FRAUD_API_URL
+        fromService:
+          type: web
+          name: fraud-api
+          property: host
+      - key: FRAUD_API_TIMEOUT_SECONDS
+        value: "120"
+      - key: FRAUD_REQUIRE_LOGIN
+        value: "true"
+      - key: FRAUD_ANALYST_USERNAME
+        sync: false
+      - key: FRAUD_ANALYST_PASSWORD
+        sync: false
+      - key: FRAUD_REVIEW_API_KEY
+        sync: false

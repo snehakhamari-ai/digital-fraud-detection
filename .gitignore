@@ -1,0 +1,16 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.vscode/
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+fraud.db
+fraud.db-*
+model.joblib
+model_metrics.csv
+confusion_matrix.png
+roc_curve.png
+transactions.csv
