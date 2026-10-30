@@ -21,10 +21,7 @@ services:
     healthCheckPath: /_stcore/health
     envVars:
       - key: FRAUD_API_URL
-        fromService:
-          type: web
-          name: fraud-api
-          property: host
+        value: https://fraud-api-nvj5.onrender.com
       - key: FRAUD_API_TIMEOUT_SECONDS
         value: "120"
       - key: FRAUD_REQUIRE_LOGIN
